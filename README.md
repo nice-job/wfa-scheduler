@@ -75,9 +75,9 @@ Sample AWS EventBridge event (received by lamdba function):
 We are using composite primary key (Details see [here](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/))
 
 - **pk** represents the partition (can be shared by many items). This is the partition key, for calculation see below.
-- **sk** represents sorting key. This is the due date of the job (when scheduler should be triggered) together with job ID to ensure uniqueness of the attribute.
+- **sk** represents sorting key. This is the due date of the job together with job ID to ensure uniqueness of the attribute.
 
-pl + sk value must be **uniqueue** for every item as these attributes together represent primary key of item.
+pk + sk value must be **uniqueue** for every item as these attributes together represent primary key of item.
 
 More details [here] (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
 
