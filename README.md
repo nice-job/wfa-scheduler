@@ -37,22 +37,6 @@ Some helper technical ntoes below...
 
 ### JSON event data
 
-Sample AWS EventBridge event (received by lamdba function):
-
-```json
-{
-	'version': '0',
-	'id': '93ea9825-264f-90fd-16a7-d640d156f5e9',
-	'detail-type': 'Scheduled Event',
-	'source': 'aws.events',
-	'account': '287378523389',
-	'time': '2022-01-24T11:51:18Z',
-	'region': 'eu-central-1',
-	'resources': ['arn:aws:events:eu-central-1:287378123456:rule/serverless-scheduler-SchedulerFunctionDispatchJobs-1SXUZFVOXE0EP'],
-	'detail': {}
-}
-```
-
 Sample DynamoDB payload (when **View DynamoDB JSON** is disabled) as stored by DFO (details section just for ilustration we can store arbitrary data):
 
 ```json
@@ -67,6 +51,22 @@ Sample DynamoDB payload (when **View DynamoDB JSON** is disabled) as stored by D
       "foo": "bar"
     }
   }
+}
+```
+
+Sample AWS EventBridge event (received by lamdba function):
+
+```json
+{
+	'version': '0',
+	'id': '93ea9825-264f-90fd-16a7-d640d156f5e9',
+	'detail-type': 'Scheduled Event',
+	'source': 'aws.events',
+	'account': '287378523389',
+	'time': '2022-01-24T11:51:18Z',
+	'region': 'eu-central-1',
+	'resources': ['arn:aws:events:eu-central-1:287378123456:rule/serverless-scheduler-SchedulerFunctionDispatchJobs-1SXUZFVOXE0EP'],
+	'detail': {}
 }
 ```
 
@@ -104,7 +104,7 @@ This can be expressed with following table:
 | 20,21,22,23,24 |  20 | 25,26,27,28,29 | 25  |
 | 30,31,32,33,34 |  30 | 35,36,37,38,39 | 35  |
 | 40,41,42,43,44 |  40 | 45,46,47,48,49 | 45  |
-| 50,51,52,53,54 | 50  | 55,56,57,58,89 | 55  |
+| 50,51,52,53,54 | 50  | 55,56,57,58,59 | 55  |
 
 
 See/run sample https://www.programiz.com/python-programming/online-compiler/
