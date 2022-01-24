@@ -4,14 +4,14 @@ POC WFA Scheduler based on AWS serverless stack.
 
 ## Requirements for enterprise based scheduling
 
-* High precision 
-** events delivered as close as possible to scheduled delivery time
-* Scale (# of pending task)
-** Target solution can support  large number of scheduled tasks waiting to be executed
-* Scale (# of task to be executed at the same time)
-** Target solution must be able to execute many tasks (millions) in parallel
-* Low TCO
-** Ideally serverless solution that can scale in and out flexibily without extensive administration and maintenance
+- ***High precision***
+	-  events delivered as close as possible to scheduled delivery time
+- ***Scale (# of pending task)***
+	- Target solution can support  large number of scheduled tasks waiting to be executed
+- ***Scale (# of task to be executed at the same time)***
+	- Target solution must be able to execute many tasks (millions) in parallel
+- ***Low TCO***
+	- Ideally serverless solution that can scale in and out flexibily without extensive administration and maintenance
 
 ## Potential solutions
 
