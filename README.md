@@ -16,14 +16,15 @@ POC WFA Scheduler based on AWS serverless stack.
 	- Ideally serverless solution that can scale in and out flexibily without extensive administration and maintenance.
 	- Acceptable costs for target solution capacity.
 
-## Potential solutions
-
-TBD
-
 ## Target solution
 
+<img src="./images/WFAScheduler.png" /></br>
+
 TBD
 
+## Technical notes
+
+Some helper technical ntoes below...
 
 ### JSON event data
 
@@ -43,46 +44,7 @@ Sample AWS EventBridge event:
 }
 ```
 
-Sample DynamoDB payload whene **View DynamoDB JSON** is enabled:
-
-```json
-{
-  "pk": {
-    "S": "j#2015-03-20T09:45"
-  },
-  "sk": {
-    "S": "2015-03-20T09:46:47.123Z#564ade05-efda-4a2e-a7db-933ad3c89a83"
-  },
-  "detail": {
-    "M": {
-      "action": {
-        "S": "send-reminder"
-      },
-      "userId": {
-        "S": "16f3a019-e3a5-47ed-8c46-f668347503d1"
-      },
-      "taskId": {
-        "S": "6d2f710d-99d8-49d8-9f52-92a56d0c6b81"
-      },
-      "params": {
-        "M": {
-          "reminder_volume": {
-            "N": "0.5"
-          },
-          "can_skip": {
-            "BOOL": true
-          }
-        }
-      }
-    }
-  },
-  "detail_type": {
-    "S": "job-reminder"
-  }
-}
-```
-
-Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
+Sample DynamoDB payload (when **View DynamoDB JSON** is disabled):
 
 ```json
 {
@@ -93,11 +55,9 @@ Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
     "userId": "16f3a019-e3a5-47ed-8c46-f668347503d1",
     "taskId": "6d2f710d-99d8-49d8-9f52-92a56d0c6b81",
     "params": {
-      "can_skip": false,
-      "reminder_volume": 0.5
+      "foo": "bar"
     }
-  },
-  "detail_type": "job-reminder"
+  }
 }
 ```
 
@@ -106,8 +66,17 @@ Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
 We are using composite primary key (Details see [here](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/))
 
 - **pk** represents the partition (can be shared by many items). This is the partition key, for calculation see below.
-- **sk** represents sorting key. This value must be **uniqueue** for every item. This is the due date of the job (when scheduler should be triggered) together witj job ID to ensure uniqueness of the attribute.
+- **sk** represents sorting key. This is the due date of the job (when scheduler should be triggered) together with job ID to ensure uniqueness of the attribute.
 
+pl + sk value must be **uniqueue** for every item as these attributes together represent primary key of item.
+
+More details [here] (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
+
+#### Partitions RCU/WCU limits
+
+3,000 RCUs or 1,000 WCUs per partition.
+
+On demand capacity mode, see [pricing example](https://aws.amazon.com/dynamodb/pricing/on-demand/).
 
 #### Partitions calculation
 
@@ -180,7 +149,6 @@ previous_partition_date_time=2022-01-24 11:50:00
 previous_partition=2022-01-24T11:50
 previous_partition=2022-01-24T11:50
 current_partition=2022-01-24T11:55
-> 
 ```
 ## Links
 
@@ -194,3 +162,8 @@ Resources used for initial analysis
 * https://aws.amazon.com/premiumsupport/knowledge-center/primary-key-dynamodb-table/
 * https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/
 * https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html
+* https://aws.amazon.com/dynamodb/pricing/on-demand/
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.html
