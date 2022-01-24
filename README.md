@@ -79,7 +79,7 @@ We are using composite primary key (Details see [here](https://aws.amazon.com/bl
 
 pk + sk value must be **uniqueue** for every item as these attributes together represent primary key of item.
 
-More details [here] (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
+More details [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
 
 #### Partitions RCU/WCU limits
 
