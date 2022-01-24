@@ -24,6 +24,47 @@ TBD
 
 TBD
 
+
+### JSON event data
+
+```json
+{
+  "pk": {
+    "S": "j#2015-03-20T09:45"
+  },
+  "sk": {
+    "S": "2015-03-20T09:46:47.123Z#564ade05-efda-4a2e-a7db-933ad3c89a83"
+  },
+  "detail": {
+    "M": {
+      "action": {
+        "S": "send-reminder"
+      },
+      "userId": {
+        "S": "16f3a019-e3a5-47ed-8c46-f668347503d1"
+      },
+      "taskId": {
+        "S": "6d2f710d-99d8-49d8-9f52-92a56d0c6b81"
+      },
+      "params": {
+        "M": {
+          "reminder_volume": {
+            "N": "0.5"
+          },
+          "can_skip": {
+            "BOOL": true
+          }
+        }
+      }
+    }
+  },
+  "detail_type": {
+    "S": "job-reminder"
+  }
+}
+```
+
+
 ## Links
 
 Resources used for initial analysis
