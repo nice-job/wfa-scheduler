@@ -2,7 +2,7 @@
 
 POC WFA Scheduler based on AWS serverless stack.
 
-## Requirements for enterprise based scheduling
+## Requirements for enterprise grade scheduling
 
 - ***High precision (delivery time)***
 	-  Events delivered as close as possible to scheduled delivery time.
@@ -15,6 +15,10 @@ POC WFA Scheduler based on AWS serverless stack.
 - ***Low TCO***
 	- Ideally serverless solution that can scale in and out flexibily without extensive administration and maintenance.
 	- Acceptable costs for target solution capacity.
+
+## DFO Context
+
+This kind of scheduler will be used for supporting DFO WFA triggers with delayed execution. Trigegr can be delayed up to 1 day and can operate on case level -> big numbers of scheduled jobs. 
 
 ## Target solution
 
