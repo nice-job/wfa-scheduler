@@ -101,6 +101,13 @@ Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
 }
 ```
 
+### Partitions in general
+
+We are using composite primary key (Details see [here](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/))
+
+- **pk** represents the partition (can be shared by many items)
+- **sk** represwnts sorting key. This value must be **uniqueue** for every item.
+
 ### Partitions calculation
 
 See https://www.programiz.com/python-programming/online-compiler/
@@ -165,3 +172,6 @@ Resources used for initial analysis
 * https://theburningmonk.com/2019/03/dynamodb-ttl-as-an-ad-hoc-scheduling-mechanism/
 * https://aws.amazon.com/blogs/architecture/serverless-scheduling-with-amazon-eventbridge-aws-lambda-and-amazon-dynamodb/
 * https://dev.to/rohanmehta_dev/scheduled-task-processing-with-dynamodb-and-eventbridge-439c
+* https://aws.amazon.com/premiumsupport/knowledge-center/primary-key-dynamodb-table/
+* https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html
