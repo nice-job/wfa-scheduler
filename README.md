@@ -18,9 +18,14 @@ POC WFA Scheduler based on AWS serverless stack.
 
 ## Target solution
 
+Combination of following serverless AWS services will be used:
+
 <img src="./images/WFAScheduler.png" /></br>
 
-TBD
+1. DFO stores one-off event to be executed in the future (deffered WFA action) into DynamoDB. Event is put into dedicated partition based on delivery time.
+2. Generic AWS Eventbridge rule with rate based schedule (every 1 minute) triggers lambda function.
+3. Lambda will use current time to calculate current and previous partition for data retrieval and retrieve all jobs/tasks to execute
+4. Taks/jobs will be pushed into AWS SQS for asynchronous processing by respective consumer(s).
 
 ## Technical notes
 
@@ -28,7 +33,7 @@ Some helper technical ntoes below...
 
 ### JSON event data
 
-Sample AWS EventBridge event:
+Sample AWS EventBridge event (received by lamdba function):
 
 ```json
 {
@@ -44,7 +49,7 @@ Sample AWS EventBridge event:
 }
 ```
 
-Sample DynamoDB payload (when **View DynamoDB JSON** is disabled):
+Sample DynamoDB payload (when **View DynamoDB JSON** is disabled) as stored by DFO (details section just for ilustration we can store arbitrary data):
 
 ```json
 {
