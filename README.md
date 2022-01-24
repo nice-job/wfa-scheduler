@@ -115,7 +115,7 @@ Partition kety pk is calculated based on minute in sk attribute as follows
 
 ```python
 f'{(sk_minutes – sk_minutes % 5):02d}'
-```python
+```
 
 This can be expressed with following table:
 
