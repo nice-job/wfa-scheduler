@@ -101,16 +101,35 @@ Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
 }
 ```
 
-### Partitions in general
+### DynamoDB Partitions
 
 We are using composite primary key (Details see [here](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/))
 
-- **pk** represents the partition (can be shared by many items)
-- **sk** represwnts sorting key. This value must be **uniqueue** for every item.
+- **pk** represents the partition (can be shared by many items). This is the partition key, for calculation see below.
+- **sk** represents sorting key. This value must be **uniqueue** for every item. This is the due date of the job (when scheduler should be triggered) together witj job ID to ensure uniqueness of the attribute.
 
-### Partitions calculation
 
-See https://www.programiz.com/python-programming/online-compiler/
+#### Partitions calculation
+
+Partition kety pk is calculated based on minute in sk attribute as follows
+
+```python
+f'{(sk_minutes – sk_minutes % 5):02d}'
+```python
+
+This can be expressed with following table:
+
+| "sk" minutes   | "pk" minutes  | "sk" minutes | "pk" minutes  |
+|----------------|-----|----------------|-----|
+| 0,1,2,3,4      | 00  | 5,6,7,8,9      | 05  |
+| 10,11,12,13,14 | 10  | 15,16,17,18,19 | 15  |
+| 20,21,22,23,24 |  20 | 25,26,27,28,29 | 25  |
+| 30,31,32,33,34 |  30 | 35,36,37,38,39 | 35  |
+| 40,41,42,43,44 |  40 | 45,46,47,48,49 | 45  |
+| 50,51,52,53,54 | 50  | 55,56,57,58,89 | 55  |
+
+
+See/run sample https://www.programiz.com/python-programming/online-compiler/
 
 Script:
 
