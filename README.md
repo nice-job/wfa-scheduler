@@ -27,6 +27,24 @@ TBD
 
 ### JSON event data
 
+Sample AWS EventBridge event:
+
+```json
+{
+	'version': '0',
+	'id': '93ea9825-264f-90fd-16a7-d640d156f5e9',
+	'detail-type': 'Scheduled Event',
+	'source': 'aws.events',
+	'account': '287378523389',
+	'time': '2022-01-24T11:51:18Z',
+	'region': 'eu-central-1',
+	'resources': ['arn:aws:events:eu-central-1:287378123456:rule/serverless-scheduler-SchedulerFunctionDispatchJobs-1SXUZFVOXE0EP'],
+	'detail': {}
+}
+```
+
+Sample DynamoDB payload whene **View DynamoDB JSON** is enabled:
+
 ```json
 {
   "pk": {
@@ -64,7 +82,80 @@ TBD
 }
 ```
 
+Sample DynamoDB payload whene **View DynamoDB JSON** is disabled:
 
+```json
+{
+  "pk": "j#2015-03-20T09:45",
+  "sk": "2015-03-20T09:46:47.123Z#564ade05-efda-4a2e-a7db-933ad3c89a83",
+  "detail": {
+    "action": "send-reminder",
+    "userId": "16f3a019-e3a5-47ed-8c46-f668347503d1",
+    "taskId": "6d2f710d-99d8-49d8-9f52-92a56d0c6b81",
+    "params": {
+      "can_skip": false,
+      "reminder_volume": 0.5
+    }
+  },
+  "detail_type": "job-reminder"
+}
+```
+
+### Partitions calculation
+
+See https://www.programiz.com/python-programming/online-compiler/
+
+Script:
+
+```python
+from datetime import timedelta
+import dateutil.parser
+
+partition_interval_in_minutes = 5
+
+def get_partitions(event_time_in_utc):
+    date_hour, strminute, *_ = event_time_in_utc.split(':')
+    
+    print("date_hour=" + date_hour)
+    print("strminute=" + strminute)
+    
+    minute = int(strminute)
+
+    current_partition = f'{date_hour}:{(minute - minute % partition_interval_in_minutes):02d}'
+    print("current_partition=" + current_partition)
+    
+    current_partition_date_time = dateutil.parser.parse(current_partition)
+    print("current_partition_date_time=" + str(current_partition_date_time))
+    previous_partition_date_time = current_partition_date_time - \
+        timedelta(minutes=partition_interval_in_minutes)
+        
+    print("previous_partition_date_time=" + str(previous_partition_date_time))
+    
+    previous_partition = previous_partition_date_time.strftime(
+        '%Y-%m-%dT%H:%M')
+
+    print("previous_partition=" + previous_partition)
+
+    return previous_partition, current_partition
+
+previous_partition, current_partition = get_partitions("2022-01-24T11:57:12Z")
+print("previous_partition=" + previous_partition)
+print("current_partition=" + current_partition)
+```
+
+will produce following partitions:
+
+```
+date_hour=2022-01-24T11
+strminute=57
+current_partition=2022-01-24T11:55
+current_partition_date_time=2022-01-24 11:55:00
+previous_partition_date_time=2022-01-24 11:50:00
+previous_partition=2022-01-24T11:50
+previous_partition=2022-01-24T11:50
+current_partition=2022-01-24T11:55
+> 
+```
 ## Links
 
 Resources used for initial analysis
