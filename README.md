@@ -159,6 +159,19 @@ previous_partition=2022-01-24T11:50
 previous_partition=2022-01-24T11:50
 current_partition=2022-01-24T11:55
 ```
+
+## Exactly-once processing
+
+Once event is retrieved from database solution must ensure it will be processed/executed exactly once. If FIFO queue will be used then:
+
+* content based deduplication cen be configured (messages with uniqueue body received twice will be identified as duplicates). See [here](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagededuplicationid-property.html).
+* exactly-once delivery will be ensured by AWS SQS
+* strict processing ordering will be ensured by AWS SQS
+
+Also message dedpulication ID can be used to ensure deduplication within 5 minute time frame.
+
+Last but not least Redis (cache + distributed locks) can be used to ensure even longer than 5 minutes dedplication window.
+
 ## Links
 
 Resources used for initial analysis
